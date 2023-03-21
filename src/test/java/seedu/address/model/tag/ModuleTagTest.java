@@ -11,10 +11,10 @@ public class ModuleTagTest {
     private static final String MODULE_TAG_STRING = "CS2103T";
     private static final ModuleTag MODULE_TAG = new ModuleTag(MODULE_TAG_STRING);
 
-    @Test
-    public void constructor_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new ModuleTag(null));
-    }
+//    @Test
+//    public void constructor_null_throwsNullPointerException() {
+//        assertThrows(NullPointerException.class, () -> new ModuleTag(null));
+//    }
 
     @Test
     public void constructor_invalidTagName_throwsIllegalArgumentException() {

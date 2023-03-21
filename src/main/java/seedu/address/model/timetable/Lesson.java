@@ -53,12 +53,12 @@ public class Lesson {
 
     @Override
     public String toString() {
-        return "Lesson{"
-                + "day=" + day
-                + "\nstartTime=" + startTime
-                + "\nendTime=" + endTime
-                + "\nlocation=" + location
-                + "\nmodule=" + module + '}';
+        return "{"
+                + module
+                + ", Start: " + startTime
+                + ", End: " + endTime
+                + ", " + location
+                + ", " + day + '}';
     }
 
     @Override
@@ -75,6 +75,12 @@ public class Lesson {
                 && endTime.isEqual(lesson.getEndTime())
                 && location.equals(lesson.getLocation())
                 && module.equals(lesson.getModule());
+    }
+
+    @Override
+    public int hashCode() {
+        String hash = day.toString() + startTime.toString() + endTime.toString() + module.toString();
+        return hash.hashCode();
     }
 
     /**

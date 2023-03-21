@@ -4,15 +4,21 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Set;
 
+import org.joda.time.LocalTime;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.IndexHandler;
 import seedu.address.model.Model;
+import seedu.address.model.location.Location;
 import seedu.address.model.person.ContactIndex;
 import seedu.address.model.person.ModuleTagSet;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.User;
 import seedu.address.model.tag.ModuleTag;
+import seedu.address.model.timetable.Lesson;
+import seedu.address.model.timetable.Module;
+import seedu.address.model.timetable.time.SchoolDay;
 
 /**
  * Removes modules from an existing person in the address book.
@@ -74,10 +80,35 @@ public class UntagCommand extends Command {
         personToEdit.setCommonModules(userModuleTags);
 
         model.updateObservablePersonList();
+
+        for (ModuleTag tag : moduleTags) {
+            String day = tag.getDay();
+            String start = tag.getStartTime();
+            String end = tag.getEndTime();
+            if (day == null || start == null || end == null) {
+                continue;
+            }
+
+            Module mod = new Module(tag.toString());
+            int startHour = Integer.parseInt(start.substring(0, 2));
+            int startMin = Integer.parseInt(start.substring(2));
+            int endHour = Integer.parseInt(end.substring(0, 2));
+            int endMin = Integer.parseInt(end.substring(2));
+            LocalTime startTime = new LocalTime(startHour, startMin);
+            LocalTime endTime = new LocalTime(endHour, endMin);
+
+            SchoolDay schoolDay = SchoolDay.valueOf(day);
+
+            Lesson lesson = new Lesson(mod, startTime, endTime, schoolDay, Location.NUS);
+
+            personToEdit.getLessons().remove(lesson);
+        }
+
         return new CommandResult(String.format(MESSAGE_UNTAG_PERSON_SUCCESS
                 + "Name: " + personToEdit.getName().toString() + '\n'
                 + "Modules: " + personToEdit.getImmutableModuleTags().toString() + '\n'
-                + "Module(s) in common: " + personToEdit.getImmutableCommonModuleTags().toString()));
+                + "Module(s) in common: " + personToEdit.getImmutableCommonModuleTags().toString() + '\n'
+                + "Lessons: " + personToEdit.getLessons().toString()));
     }
 
     /**
@@ -96,9 +127,33 @@ public class UntagCommand extends Command {
         model.getObservablePersonList().forEach(person ->
                 person.setCommonModules(editedUser.getImmutableModuleTags()));
 
+        for (ModuleTag tag : moduleTags) {
+            String day = tag.getDay();
+            String start = tag.getStartTime();
+            String end = tag.getEndTime();
+            if (day == null || start == null || end == null) {
+                continue;
+            }
+
+            Module mod = new Module(tag.toString());
+            int startHour = Integer.parseInt(start.substring(0, 2));
+            int startMin = Integer.parseInt(start.substring(2));
+            int endHour = Integer.parseInt(end.substring(0, 2));
+            int endMin = Integer.parseInt(end.substring(2));
+            LocalTime startTime = new LocalTime(startHour, startMin);
+            LocalTime endTime = new LocalTime(endHour, endMin);
+
+            SchoolDay schoolDay = SchoolDay.valueOf(day);
+
+            Lesson lesson = new Lesson(mod, startTime, endTime, schoolDay, Location.NUS);
+
+            editedUser.getLessons().remove(lesson);
+        }
+
         return new CommandResult(String.format(MESSAGE_UNTAG_USER_SUCCESS
                 + "Name: " + editedUser.getName().toString() + '\n'
-                + "Modules: " + editedUser.getImmutableModuleTags().toString()));
+                + "Modules: " + editedUser.getImmutableModuleTags().toString() + '\n'
+                + "Lessons: " + editedUser.getLessons().toString()));
     }
 
     public ContactIndex getIndex() {

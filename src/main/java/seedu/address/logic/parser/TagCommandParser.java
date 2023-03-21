@@ -25,6 +25,7 @@ public class TagCommandParser implements Parser<TagCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultiMap = ArgumentTokenizer.tokenize(args, Prefix.MODULE_TAG);
 
+        //CS3230 or CS3230 DAY TIME TIME OR CS2100
         ContactIndex contactIndex;
 
         try {
@@ -35,7 +36,6 @@ public class TagCommandParser implements Parser<TagCommand> {
 
         Optional<Set<ModuleTag>> modulesToAdd =
                 ParserUtil.parseModuleTagsForCommands(argMultiMap.getAllValues(Prefix.MODULE_TAG));
-
         if (modulesToAdd.isEmpty()) {
             throw new ParseException(TagCommand.MESSAGE_NO_TAGS);
         }

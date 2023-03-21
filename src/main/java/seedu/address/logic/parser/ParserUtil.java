@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.TagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.ContactIndex;
@@ -155,6 +157,26 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String tags} into a {@code String[]}
+     *
+     * @param tags String of tag to parse
+     * @return String[] of tags.
+     * @throws ParseException
+     */
+    public static String[] parseModuleMore(String tags) throws ParseException {
+        //input "CS3230" or "CS3230 DAY TIME TIME"
+        String trimmedArgs = tags.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+        }
+
+        return trimmedArgs.split("\\s+");
+        //output expected tags[0] == CS3230, tags[1] == DAY, tags[2] == START, tags[3] == END
+        //tags[4] == location name tags[5] == lat tags[6] == long
+    }
+
+    /**
      * Parses a {@code String tag} into a {@code GroupTag}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -163,10 +185,12 @@ public class ParserUtil {
     public static ModuleTag parseModuleTag(String tag) throws ParseException {
         requireNonNull(tag);
         String trimmedTag = tag.trim();
-        if (!ModuleTag.isValidTagName(trimmedTag)) {
+        String[] args = parseModuleMore(trimmedTag);
+        if (!ModuleTag.isValidTagName(args[0])) {
             throw new ParseException(ModuleTag.MESSAGE_CONSTRAINTS);
         }
-        return new ModuleTag(trimmedTag);
+        // need assertions for other arguments as well.
+        return new ModuleTag(args);
     }
 
     /**

@@ -28,6 +28,8 @@ public class Person {
     private final Address address;
     private final GroupTagSet groupTags = new GroupTagSet();
     private final ModuleTagSet moduleTags = new ModuleTagSet();
+    private final LessonSet lessons = new LessonSet();
+    // to change constructor for person????
 
     /**
      * Every field must be present and not null.
@@ -181,9 +183,14 @@ public class Person {
                 .append("\nGroups: ")
                 .append(getImmutableGroupTags())
                 .append("\nModules: ")
-                .append(getImmutableModuleTags());
+                .append(getImmutableModuleTags())
+                .append("\nLessons: ")
+                .append(getLessons());
 
         return builder.toString();
     }
 
+    public LessonSet getLessons() {
+        return lessons;
+    }
 }
