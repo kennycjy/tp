@@ -102,16 +102,4 @@ public class ModuleTag extends Tag implements Comparable<ModuleTag> {
     public String getDay() {
         return day;
     }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
 }
