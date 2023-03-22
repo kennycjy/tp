@@ -15,12 +15,9 @@ public class ModuleTag extends Tag implements Comparable<ModuleTag> {
             "NUS Modules should have 2 - 3 letter prefix, followed by 4 digits and optional 1 - 3 alphabets";
     public static final String VALIDATION_REGEX = "[A-Z]{2,4}[0-9]{4}[A-Z]{0,3}";
 
-    private String day;
-    private String startTime;
-    private String endTime;
-    private String location;
-    private String latitude;
-    private String longitude;
+    private final String day;
+    private final String startTime;
+    private final String endTime;
 
 
     /**
